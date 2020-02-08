@@ -2,10 +2,8 @@ import {useRouter} from "next/router"
 import Head from "next/head"
 import React from "react"
 
-export default function Page(ctx) {
+export default function Page({title}) {
   let {query} = useRouter()
-
-  console.log("query:", query)
 
   let [loading, setLoading] = React.useState(true)
   let [data, setData] = React.useState(null)
@@ -24,8 +22,9 @@ export default function Page(ctx) {
   if (loading) {
     return <div>
       <Head>
-        <title>Post {query.slug}</title>
+        <title>{title}</title>
       </Head>
+      <h1>Post {query.slug}</h1>
       <p>
         Loading...
       </p>
@@ -37,12 +36,15 @@ export default function Page(ctx) {
   </div>
 }
 
-// Page.getInitialProps = function () {
-//   return {}
-// }
-
-export async function unstable_getStaticProps() {
+Page.getInitialProps = async function () {
+  let title = await Promise.resolve("Async Title")
   return {
-    props: {}
+    title
   }
 }
+
+// export async function unstable_getStaticProps() {
+//   return {
+//     props: {}
+//   }
+// }
